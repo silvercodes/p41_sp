@@ -29,15 +29,6 @@
 
 using System.Diagnostics;
 
-//Process[] existsProcesses = Process.GetProcesses();
-
-//var processes = existsProcesses.OrderBy(p => p.Id);
-
-//foreach(Process process in processes)
-//    Console.WriteLine($"pid: {process.Id} {process.ProcessName}");
-
-
-
 void Run()
 {
     string? input;
@@ -51,8 +42,125 @@ void Run()
         Console.WriteLine("6. Kill process");
 
         input = Console.ReadLine();
+
+        switch(input)
+        {
+            case "1":
+                ShowAllProcesses();
+                break;
+            case "2":
+                GetProcessById();
+                break;
+            case "3":
+                ShowThreads();
+                break;
+            case "4":
+                ShowModules();
+                break;
+            case "5":
+                StartProcess();
+                break;
+            case "6":
+                KillProcess();
+                break;
+        }
+
     }
 }
+
+Run();
+
+void ShowAllProcesses()
+{
+    Process[] existsProcesses = Process.GetProcesses();
+
+    var processes = existsProcesses.OrderBy(p => p.Id);
+
+    foreach (Process process in processes)
+        Console.WriteLine($"pid: {process.Id} {process.ProcessName}");
+}
+
+void GetProcessById()
+{
+    try
+    {
+        Process p = GetProcessFromInput();
+
+        Console.WriteLine($"{p.Id}\t{p.ProcessName}\t{p.BasePriority}\t{p.StartTime}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"ERROR: {ex.Message}");
+    }
+
+}
+
+void ShowThreads()
+{
+    try
+    {
+        Process p = GetProcessFromInput();
+
+        var threads = p.Threads;
+        Console.WriteLine("Threads list:");
+        foreach(ProcessThread t in threads)
+            Console.WriteLine($"{t.Id}\t{t.StartTime.ToShortTimeString()}\t{t.PriorityLevel}");
+
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"ERROR: {ex.Message}");
+    }
+}
+
+void ShowModules()
+{
+    try
+    {
+        Process p = GetProcessFromInput();
+
+        ProcessModuleCollection modules = p.Modules;
+        foreach(ProcessModule m in modules)
+            Console.WriteLine($"{m.ModuleName}\t{m.ModuleMemorySize}");
+
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"ERROR: {ex.Message}");
+    }
+}
+
+void StartProcess()
+{
+    // Process.Start("notepad");
+    // Process.Start(@"C:\Program Files\Google\Chrome\Application\chrome.exe", "https://wikipedia.org --incognito");
+    Process.Start(@"C:\Users\ThinkPad\Desktop\cpp_pro.exe");
+}
+
+void KillProcess()
+{
+    try
+    {
+        Process p = GetProcessFromInput();
+
+        p.Kill();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"ERROR: {ex.Message}");
+    }
+}
+
+Process GetProcessFromInput()
+{
+    Console.Write("Enter PID: ");
+    string? input = Console.ReadLine();
+
+    int pid = int.Parse(input);
+
+    return Process.GetProcessById(pid);
+}
+
 
 
 
