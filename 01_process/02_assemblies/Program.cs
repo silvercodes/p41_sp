@@ -28,6 +28,8 @@ Console.WriteLine("==== BEFORE LOADING =======");
 ShowAssemblies();
 
 AssemblyLoadContext ctx = new AssemblyLoadContext("lib_ctx", true);
+ctx.Unloading += c => Console.WriteLine(">>>>>>ASSEMBLY_CONTEXT UNLOADED<<<<<<<");
+
 Assembly assembly = ctx.LoadFromAssemblyPath(Path.Combine(Directory.GetCurrentDirectory(), "MathLib.dll"));
 
 Console.WriteLine("==== AFTER LOADING =======");
@@ -36,15 +38,21 @@ ShowAssemblies();
 Type? type = assembly.GetType("MathLib.Calculator");
 
 // === static call
-MethodInfo? method = type?.GetMethod("Factorial");
-int? result = (int?)method?.Invoke(assembly, new object[] { 5 });
-Console.WriteLine($"Factorial = {result}");
+//MethodInfo? method = type?.GetMethod("Factorial");
+//int? result = (int?)method?.Invoke(assembly, new object[] { 5 });
+//Console.WriteLine($"Factorial = {result}");
 
+// === non static call
+MethodInfo? method = type?.GetMethod("Sum");
+object? obj = Activator.CreateInstance(type);
+int? result = (int?)method.Invoke(obj, new object[] { 4, 5 });
+Console.WriteLine($"Sum = {result}");
 
+ctx.Unload();
+GC.Collect();
 
-
-
-
+Console.WriteLine("==== FTER LOADING =======");
+ShowAssemblies();
 
 void ShowAssemblies()
 {
@@ -54,5 +62,3 @@ void ShowAssemblies()
         Console.WriteLine($"{a.GetName().Name}\t{a.GetName().Version}");
 }
 #endregion
-
-
