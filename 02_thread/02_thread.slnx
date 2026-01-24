@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="01_thread/01_thread.csproj" />
+  <Project Path="02_sync/02_sync.csproj" Id="8e09ce3d-d76a-4963-8fbe-c7f11d2cb69a" />
 </Solution>
