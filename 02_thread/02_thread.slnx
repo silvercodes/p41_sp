@@ -1,4 +1,6 @@
 <Solution>
   <Project Path="01_thread/01_thread.csproj" />
   <Project Path="02_sync/02_sync.csproj" Id="8e09ce3d-d76a-4963-8fbe-c7f11d2cb69a" />
+  <Project Path="03_producer_concumer_queue/03_producer_concumer_queue.csproj" Id="b8aeeecc-0962-4c79-b40a-f1a15e3a86fe" />
+  <Project Path="PCQ/PCQ.csproj" Id="5674fa48-16e3-4970-97a7-9f71d8a555b7" />
 </Solution>
