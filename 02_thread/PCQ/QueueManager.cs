@@ -9,6 +9,7 @@ public class QueueManager
     private Queue<IJob> jobs = new Queue<IJob>();
     private int workersCount;
     private List<Thread> threads = new List<Thread>();
+    private EventWaitHandle wh = new AutoResetEvent(false);
 
     public QueueManager(int workersCount)
     {
@@ -34,16 +35,32 @@ public class QueueManager
     {
         lock (jobs)
             jobs.Enqueue(job);
+
+        wh.Set();
     }
 
     private void Handle()
     {
         while(true)
         {
+            IJob? job = null;
+
+            lock(jobs)
+            {
+                if (jobs.Count > 0)
+                    job = jobs.Dequeue();
+            }
+
+            if (job is not null)
+            {
+                job.Execute();
+                Console.WriteLine($"{Thread.CurrentThread.Name} HANDLED {job.GetInfo()}");
+            }
+            else
+            {
+                wh.WaitOne();
+            }
 
         }
     }
-
-
-
 }

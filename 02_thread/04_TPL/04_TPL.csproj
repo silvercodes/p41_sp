@@ -3,13 +3,9 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
-    <RootNamespace>_03_producer_concumer_queue</RootNamespace>
+    <RootNamespace>_04_TPL</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\PCQ\PCQ.csproj" />
-  </ItemGroup>
 
 </Project>
